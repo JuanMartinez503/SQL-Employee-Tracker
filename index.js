@@ -105,7 +105,7 @@ function addDepartment() {
   inquirer
     .prompt({
       type: "input",
-      message: "Enter the name of the department:",
+      message: "What is the name of the new department?",
       name: "name",
     })
     .then((result) => {
@@ -309,5 +309,6 @@ function exitApp() {
   console.log("Exiting application...");
   process.exit();
 }
+//closes the application when you click on the exit choice
 
 init();
