@@ -1,13 +1,15 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
+//I bring in the libraries needed for my application to work
 
 const db = mysql.createConnection({
+  //I use sequel to stablish a connection with my database
   host: "localhost",
   user: "root",
   password: "501282",
   database: "company_db",
 });
-
+//this function starts my whole application
 function init() {
   inquirer
     .prompt({
@@ -27,6 +29,7 @@ function init() {
     })
     .then((result) => {
       const selectedChoice = result.choice;
+      //I perform a switch/case which does activates different functions to start
       switch (selectedChoice) {
         case "View all departments":
           viewAllDepartments();
@@ -57,6 +60,7 @@ function init() {
 }
 
 function viewAllDepartments() {
+  //this shows me a table of all the ids, and department names of the departments table
   db.query("SELECT * FROM departments", (err, result) => {
     if (err) {
       console.log(err);
@@ -69,6 +73,7 @@ function viewAllDepartments() {
 
 function viewAllRoles() {
   db.query(
+    //this shows me a criteria of roles and shows the department name which the department table is connected by the department id.
     `SELECT roles.id, roles.title, roles.salary, departments.name AS department
     FROM roles
     INNER JOIN departments ON roles.department_id = departments.id`,
@@ -85,6 +90,7 @@ function viewAllRoles() {
 
 function viewAllEmployees() {
   db.query(
+    //this table connects two different tables
     `SELECT employees.id, employees.first_name, employees.last_name, roles.title AS role, 
     roles.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager
     FROM employees
@@ -102,6 +108,7 @@ function viewAllEmployees() {
 }
 
 function addDepartment() {
+  //this function adds a department which automatically gets an id
   inquirer
     .prompt({
       type: "input",
@@ -126,6 +133,7 @@ function addDepartment() {
 }
 
 function addRole() {
+  //this function adds a role.
   db.query("SELECT * FROM departments", (err, departments) => {
     if (err) {
       console.log(err);
@@ -136,6 +144,7 @@ function addRole() {
     const departmentChoices = departments.map((department) => ({
       name: department.name,
       value: department.id,
+      //the departments is looped through with a map method. The department name is showed in the list choice, but the value which is the id is used.
     }));
 
     inquirer
@@ -176,13 +185,14 @@ function addRole() {
 }
 
 function addEmployee() {
+  //this adds an employee to the database.
   db.query("SELECT * FROM roles", (err, roles) => {
     if (err) {
       console.log(err);
       init();
       return;
     }
-
+    //puts the roles into a list so I can choose it.
     const roleChoices = roles.map((role) => ({
       name: role.title,
       value: role.id,
@@ -247,6 +257,7 @@ function addEmployee() {
 }
 
 function updateEmployeeRole() {
+  //this updates the employees role
   db.query("SELECT * FROM employees", (err, employees) => {
     if (err) {
       console.log(err);
@@ -312,3 +323,4 @@ function exitApp() {
 //closes the application when you click on the exit choice
 
 init();
+//this starts the whole application
