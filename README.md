@@ -1,7 +1,7 @@
 # SQL:Employee Tracker
 
 ## Description
-- My task was to build a database using SQL. The application is able to view and manage the departments, roles, and employees in my company.
+- My task was to build a database from scratch using Node.js, Inquirer, and MySQL. The application is able to view and manage the departments, roles, and employees in my company.
 - I did not receive any starter code for this application. The application runs in the terminal using node.js
 
 ## Screenshots
